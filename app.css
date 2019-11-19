@@ -1,0 +1,31 @@
+.barLink {
+    color: #9e9696;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 300ms;
+}
+.barLink:hover {
+    color: #850606;
+}
+.logoImg {
+    width: 60px;
+}
+.titlePage {
+    border-left : 1px solid;
+    padding-left : 10px;
+    color : #850606;
+    font-weight: bold;
+}
+
+.user-space {
+    transition: width 400ms;
+    overflow: hidden;
+    height : 100%;
+    width : 0px;
+    position : absolute;
+    right : 0;
+    top : 0;
+    z-index : 1100;
+    color : #fff;
+    background-color : #850606;
+}
