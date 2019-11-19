@@ -34,7 +34,7 @@ class appBar extends React.Component {
                             <Box display="flex" style={{width: '200px'}} justifyContent="flex-start" alignItems="center">
                                 <BarLink class="barLink" title="Accueil" link="/index"/>
                                 <BarLink class="barLink" title="Catégories" link="/index"/>
-                                <BarLink class="barLink" title="Articles" link="/articles"/>
+                                <BarLink class="barLink" title="Articles" link="/#"/>
                             </Box>
                             <Box display="flex" style={{width: '200px'}} justifyContent="center" alignItems="center">
                                 <img className={'logoImg'} src="/logo.svg" alt="logo"/>
