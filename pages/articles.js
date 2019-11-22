@@ -7,7 +7,6 @@ import {makeStyles} from "@material-ui/core";
 import Link from "../src/Link";
 import Moment from "react-moment";
 
-
 const useStyles = makeStyles(theme => ({
     content: {
         borderBottom : "1px solid rgba(0, 0, 0,.2)",

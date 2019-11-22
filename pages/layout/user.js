@@ -9,6 +9,7 @@ import Header from "./header";
 import Container from "@material-ui/core/Container";
 import articles from "../articles";
 
+
 const theStyles = makeStyles(theme => ({
     user: {
         height: '100%',
@@ -34,15 +35,12 @@ class User extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: {}
+            user: null
         }
     }
 
-    componentDidMount() {
-        fetch('http://localhost:8080/api/user/1')
-            .then(response => response.json())
-            .then(data => this.setState({user: data[0]}));
-
+    setUser(user) {
+        this.setState({user:user})
     }
 
     closeUser() {
@@ -60,7 +58,7 @@ class User extends React.Component {
                 paddingTop: '35px',
                 paddingRight: '35px',
                 paddingLeft: '35px',
-                color : '#fff'
+                color: '#fff'
             },
             closeIcon: {
                 position: 'absolute',
@@ -75,11 +73,11 @@ class User extends React.Component {
         return (
             <div style={style.user}>
 
-                <Box  display="flex" flexDirection="Column" alignItems="center">
+                <Box display="flex" flexDirection="Column" alignItems="center">
                     <Avatar style={style.bigAvatar} src="/sylvain.jpg"/>
 
                     <span>
-                        {user.username}
+                        {this.props.user.username}
                     </span>
                 </Box>
                 <span>
