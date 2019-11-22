@@ -39,22 +39,17 @@ class User extends React.Component {
         }
     }
 
-    setUser(user) {
-        this.setState({user:user})
-    }
-
     closeUser() {
         document.getElementById('userContainer').style.width = '0px'
 
     }
 
     render() {
-        const user = this.state.user;
         const style = {
             user: {
                 height: '100%',
                 width: '500px',
-                backgroundColor: '#ff0000',
+                backgroundColor: 'rgb(133, 6, 6)',
                 paddingTop: '35px',
                 paddingRight: '35px',
                 paddingLeft: '35px',
@@ -63,7 +58,8 @@ class User extends React.Component {
             closeIcon: {
                 position: 'absolute',
                 top: '20px',
-                right: '20px'
+                right: '20px',
+                cursor : 'pointer'
             },
             bigAvatar: {
                 width: 100,
@@ -72,7 +68,6 @@ class User extends React.Component {
         }
         return (
             <div style={style.user}>
-
                 <Box display="flex" flexDirection="Column" alignItems="center">
                     <Avatar style={style.bigAvatar} src="/sylvain.jpg"/>
 

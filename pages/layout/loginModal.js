@@ -36,7 +36,7 @@ class loginModal extends React.Component {
      }
 
      handleSubmit = () => {
-         fetch('http://localhost:8080/api/login?username='+this.state.username+'&&password='+this.state.password)
+         fetch(process.env.REACT_API+'/login?username='+this.state.username+'&&password='+this.state.password)
              .then(response => response.json())
              .then(data => this.saveToken(data.token));
      }

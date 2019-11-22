@@ -68,9 +68,9 @@ class header extends React.Component {
             method: 'POST',
             headers: headers
         }
-        fetch('http://localhost:8080/api/authed', obj)
-            .then(response => response.json())
-            .then(data => this.setState({user: data}));
+        fetch(process.env.REACT_API+'/authed', obj)
+            .then(response => response.status === 401 ? null  : response.json())
+            .then(data => this.setState({user : data}));
     }
 
     showUser() {

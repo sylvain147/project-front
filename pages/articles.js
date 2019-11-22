@@ -79,7 +79,7 @@ const Content = props => (
                          pr={2}
                          className={useStyles().info}>
                         <Box mr={2}>
-                            Ecrit par :  <Link  href="#" className={useStyles().userLink} >{props.username}</Link>
+                            Ecrit par :  {props.username}
                         </Box>
                         -
                         <Box ml={2}>
@@ -105,7 +105,7 @@ const articles = props => (
     </React.Fragment>
 )
 articles.getInitialProps = async function () {
-    const res = await fetch('http://localhost:8080/api/articles');
+    const res = await fetch(process.env.REACT_API+'/articles');
 
     const articles = await res.json();
 
