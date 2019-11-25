@@ -9,8 +9,11 @@ class User extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: this.props.user
+            username: null
         }
+    }
+    componentDidMount() {
+        this.setState({username : this.props.user.username})
     }
     closeUser = () => {
         document.getElementById(this.props.container).style.width = '0px'
@@ -45,7 +48,7 @@ class User extends React.Component {
                     <Avatar style={style.bigAvatar} src="/sylvain.jpg"/>
 
                     <span>
-                        {this.state.user.username}
+                        {this.state.username}
                     </span>
                 </Box>
                 <span>
