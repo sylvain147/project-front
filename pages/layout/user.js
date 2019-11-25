@@ -4,23 +4,18 @@ import Avatar from '@material-ui/core/Avatar';
 import CloseIcon from '@material-ui/icons/Close';
 import Box from '@material-ui/core/Box';
 import LogOutModal from './logOutModal'
-import ReactDOM from 'react-dom'
-import fetch from "isomorphic-unfetch";
-import Header from "./header";
-import Container from "@material-ui/core/Container";
-import articles from "../articles";
 
 class User extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: null
+            user: this.props.user
         }
     }
     closeUser = () => {
         document.getElementById(this.props.container).style.width = '0px'
 
-    }
+    };
     render() {
         const style = {
             user: {
@@ -39,7 +34,7 @@ class User extends React.Component {
                 width: 100,
                 height: 100
             }
-        }
+        };
         return (
             <div style={style.user}>
                 <Box display="flex" flexDirection="Column" alignItems="center">
@@ -50,7 +45,7 @@ class User extends React.Component {
                     <Avatar style={style.bigAvatar} src="/sylvain.jpg"/>
 
                     <span>
-                        {this.props.user.username}
+                        {this.state.user.username}
                     </span>
                 </Box>
                 <span>
