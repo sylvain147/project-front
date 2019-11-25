@@ -11,6 +11,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import User from './user'
 import LoginModal from "./loginModal";
 import fetch from "isomorphic-unfetch";
+import RegisterModal from "./registerModal";
 
 const useStyles = makeStyles(theme => ({
     navLink: {
@@ -81,12 +82,12 @@ class header extends React.Component {
         if (this.state.user != null) {
             return <span onClick={this.showUser} id="showUser"><AccountCircleIcon style={{cursor: 'pointer'}}/></span>
         }
-        return <LoginModal id="login"/>
+        return  <div><LoginModal id="login"/> / <RegisterModal /></div>
     }
 
     getUser() {
         if (this.state.user != null) {
-            return <User user={this.state.user}/>
+            return <User user={this.state.user} container={"userContainer"}/>
         }
         return <div></div>
     }
@@ -128,20 +129,20 @@ class header extends React.Component {
                     <Toolbar height="100px">
                         <Box display="flex" justifyContent="space-between" style={{width: '100%'}}>
 
-                            <Box display="flex" style={{width: '200px'}} justifyContent="flex-start"
+                            <Box display="flex" style={{width: '210px'}} justifyContent="flex-start"
                                  alignItems="center">
                                 <BarLink title="Accueil" link="/"/>
                                 <BarLink title="Catégories" link="/index"/>
                                 <BarLink title="Articles" link="/articles"/>
                             </Box>
-                            <Box display="flex" style={{width: '200px'}} justifyContent="center" alignItems="center">
+                            <Box display="flex" style={{width: '210px'}} justifyContent="center" alignItems="center">
                                 <img style={style.logoImg} src="/logo.svg" alt="logo"/>
                                 <Typography style={style.titlePage} variant="body1" align="center">
                                     Rougetube
                                 </Typography>
 
                             </Box>
-                            <Box display="flex" style={{width: '200px'}} justifyContent="flex-end" alignItems="center">
+                            <Box display="flex" style={{width: '210px'}} justifyContent="flex-end" alignItems="center">
                                 {this.getUserStatus()}
                             </Box>
                         </Box>
@@ -151,7 +152,6 @@ class header extends React.Component {
                 <Toolbar/>
                 <div id={"userContainer"} style={style.userContainer}>
                     {this.getUser()}
-
                 </div>
             </React.Fragment>
 

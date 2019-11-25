@@ -6,11 +6,12 @@ import Fade from '@material-ui/core/Fade';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import fetch from "isomorphic-unfetch";
-import Box from '@material-ui/core/Box';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import {Box} from "@material-ui/core";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import Snackbar from "@material-ui/core/Snackbar";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
 
-
-class loginModal extends React.Component {
+class registerModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,13 +19,14 @@ class loginModal extends React.Component {
             password: null,
             hideForm: false,
             error: false,
-            open: false
+            mail: null,
+            errorMessage : '',
+            open: false,
+            openBadSnack : false,
+            openGoodSnack : false
         }
     }
 
-    saveToken = (token) => {
-        localStorage.setItem('idToken', token)
-    };
     changeUsername = (event) => {
         this.setState({username: event.target.value})
     };
@@ -33,8 +35,18 @@ class loginModal extends React.Component {
         this.setState({password: event.target.value})
     };
 
+    changeMail = (event) => {
+        this.setState({mail: event.target.value})
+    };
+
     handleOpen = () => {
         this.setState({open: true})
+    };
+    handleCloseBadSnack = () => {
+        this.setState({openBadSnack :false})
+    };
+    handleCloseGoodSnack = () => {
+        this.setState({openGoodSnack :false})
     };
 
     handleClose = () => {
@@ -43,34 +55,37 @@ class loginModal extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({hideForm: true});
-        let req = {
-            method : 'POST',
+        this.setState({hideForm: true})
+        let obj = {
+            method: 'POST',
             body: JSON.stringify({
                 username: this.state.username,
                 password: this.state.password,
+                email: this.state.mail
             }),
             headers: {
                 "Content-Type": "application/json"
             }
-        };
-        fetch(process.env.REACT_API + '/login',req)
+        }
+        fetch(process.env.REACT_API + '/user', obj)
             .then(response => {
-                    if (response.status === 401) {
+                    if (response.status === 400) {
                         this.setState({
-                            error: true,
-                            hideForm: false
-                        });
-                        return;
+                            openBadSnack :true,
+                            hideForm: false,
+                            error : true
+                        })
                     }
-                    return response.json()
+                    else {
+                        this.setState({
+                            openGoodSnack :true,
+                            hideForm: false,
+                            error : false
+                        })
+                    }
                 }
             )
-            .then(data => {
-                this.saveToken(data.token);
-                window.location.reload();
-            });
-    };
+    }
 
     render() {
         const style = {
@@ -82,23 +97,16 @@ class loginModal extends React.Component {
             paper: {
                 backgroundColor: "#fff",
                 border: '2px solid #000',
-                padding: '10px',
                 width: '500px',
                 display: 'flex',
                 alignItems: 'center',
-                height: '200px',
+                height: '320px',
                 justifyContent: 'center'
-
-            },
-            input: {
-                marginLeft: '10px',
-                marginRight: '10px',
             },
             validate: {
                 textAlign: 'center',
-                width: '96%',
-                margin: "10px",
-                marginTop: '20px'
+                width: '100%',
+                marginTop: '10px'
             },
             form: {
                 display: this.state.hideForm ? 'none' : 'block'
@@ -107,13 +115,14 @@ class loginModal extends React.Component {
                 display: this.state.hideForm ? 'block' : 'none',
                 width: '300px'
             }
-        };
+
+        }
 
 
         return (
             <div style={{display: 'inline-block'}}>
-                <span style={{color : '#556cd6', cursor:'pointer'}} onClick={this.handleOpen}>
-                    Se connecter
+                <span style={{color : '#556cd6', cursor:'pointer'}}onClick={this.handleOpen}>
+                    Créer un compte
                 </span>
                 <Modal
                     aria-labelledby="transition-modal-title"
@@ -128,34 +137,55 @@ class loginModal extends React.Component {
                     }}
                 >
                     <Fade in={this.state.open}>
-                        <Box style={style.paper}>
+                        <div style={style.paper}>
                             <LinearProgress style={style.progress}/>
                             <form onSubmit={this.handleSubmit} style={style.form}>
-                                <Box display="flex">
-                                    <TextField id="username"
-                                               required
+                                <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+                                    <TextField id="email"
+                                               label="email"
+                                               margin="dense"
+                                               type="email"
                                                error={this.state.error}
-                                               style={style.input}
+                                               onChange={this.changeMail}
+                                               variant="outlined"
+                                               required
+                                    />
+                                    <TextField id="username"
                                                label="username"
                                                margin="dense"
-                                               variant="outlined"
+                                               error={this.state.error}
                                                onChange={this.changeUsername}
+                                               variant="outlined"
+                                               required
                                     />
                                     <TextField id="password"
-                                               required
                                                label="password"
-                                               style={style.input}
-                                               error={this.state.error}
-                                               type="password"
-                                               variant="outlined"
                                                margin="dense"
+                                               type="password"
                                                onChange={this.changePassword}
+                                               variant="outlined"
+                                               required
                                     />
+
                                 </Box>
-                                <Button type="submit" variant="contained" color='primary'
+                                <Button  type="submit" variant="contained" color='primary'
                                         style={style.validate}> Valider</Button>
                             </form>
-                        </Box>
+                            <Snackbar
+                                open={this.state.openBadSnack}
+                                autoHideDuration={3000}
+                                onClose={this.handleCloseBadSnack}
+                            >
+                                <SnackbarContent style={{backgroundColor : '#d32f2f', textAlign : 'center'}}  message="Utitlisateur déjà existant"/>
+                            </Snackbar>
+                            <Snackbar
+                                open={this.state.openGoodSnack}
+                                autoHideDuration={3000}
+                                onClose={this.handleCloseGoodSnack}
+                            >
+                                <SnackbarContent style={{backgroundColor : '#43a047', textAlign : 'center'}}  message="Utitlisateur crée"/>
+                            </Snackbar>
+                        </div>
                     </Fade>
                 </Modal>
             </div>
@@ -163,4 +193,4 @@ class loginModal extends React.Component {
     }
 }
 
-export default loginModal;
+export default registerModal;
