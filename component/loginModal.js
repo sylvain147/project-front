@@ -61,14 +61,16 @@ class loginModal extends React.Component {
                             error: true,
                             hideForm: false
                         });
-                        return;
+                        return null;
                     }
                     return response.json()
                 }
             )
             .then(data => {
-                this.saveToken(data.token);
-                window.location.reload();
+                if(data!== null) {
+                    this.saveToken(data.token);
+                    window.location.reload();
+                }
             });
     };
 

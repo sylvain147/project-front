@@ -1,4 +1,4 @@
-import Header from './layout/header';
+import Header from '../component/header';
 import React from 'react';
 import fetch from 'isomorphic-unfetch';
 import Box from '@material-ui/core/Box';
@@ -96,7 +96,6 @@ const Content = props => (
 
 const articles = props => (
     <React.Fragment>
-        <Header/>
         <Container maxWidth="lg">
             {props.articles.map(article => (
                 <Content key={article.article_id} title={article.title} description={JSON.parse(article.data)['description']} username={article.username} created={article.created_at}/>

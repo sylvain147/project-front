@@ -1,5 +1,5 @@
-import Link from '../../src/Link';
-import React from 'react';
+import Link from '../src/Link';
+import React, {useContext} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -12,6 +12,7 @@ import User from './user'
 import LoginModal from "./loginModal";
 import fetch from "isomorphic-unfetch";
 import RegisterModal from "./registerModal";
+import {UserContext} from "./UserContext";
 
 const useStyles = makeStyles(theme => ({
     navLink: {
@@ -52,42 +53,20 @@ const BarLink = props => (
 );
 
 class header extends React.Component {
-    constructor(props, context) {
-
-        super(props);
-        this.state = {
-            user: null,
-        }
-    }
-
-
-    componentDidMount() {
-        let headers = new Headers();
-        headers.append("authorization", localStorage.getItem('idToken'));
-
-        let obj = {
-            method: 'POST',
-            headers: headers
-        }
-        fetch(process.env.REACT_API+'/authed', obj)
-            .then(response => response.status === 401 ? null  : response.json())
-            .then(data => this.setState({user : data}));
-    }
 
     showUser() {
         document.getElementById('userContainer').style.width = '500px'
     }
 
     getUserStatus() {
-        if (this.state.user != null) {
+        if (this.context.user !== null) {
             return <span onClick={this.showUser} id="showUser"><AccountCircleIcon style={{cursor: 'pointer'}}/></span>
         }
         return  <div><LoginModal id="login"/> / <RegisterModal /></div>
     }
-
     getUser() {
-        if (this.state.user != null) {
-            return <User user={this.state.user} container={"userContainer"}/>
+        if (this.context.user != null) {
+            return <User user={this.context.user.user} container={"userContainer"}/>
         }
         return <div></div>
     }
@@ -158,5 +137,6 @@ class header extends React.Component {
         )
     }
 }
+header.contextType = UserContext
 
 export default header

@@ -5,14 +5,20 @@
   "dependencies": {
     "@material-ui/core": "latest",
     "@material-ui/icons": "^4.5.1",
+    "aws-sdk": "latest",
+    "axios": "latest",
     "clsx": "latest",
-    "isomorphic-unfetch": "^3.0.0",
-    "moment": "^2.24.0",
+    "isomorphic-unfetch": "latest",
+    "markdown-it": "latest",
+    "moment": "latest",
     "next": "latest",
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-moment": "^0.9.6"
+    "react-markdown-editor-lite": "latest",
+    "react-mde": "latest",
+    "react-moment": "latest",
+    "showdown": "latest"
   },
   "scripts": {
     "dev": "next",
