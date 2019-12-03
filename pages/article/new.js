@@ -20,7 +20,6 @@ class newArticle extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: null,
             slug: ''
         }
         this.mdParser = new MarkdownIt()
@@ -54,7 +53,7 @@ class newArticle extends React.Component {
                     <Container maxWidth="md">
                         <FormControl fullWidth>
                             <form id="articleForm" >
-                                <input type="number" name="userId" style={{display:'none'}} value={this.context.user.id}/>
+                                <input type="number" name="userId" style={{display:'none'}} value={this.context.user.user.user_id} readOnly/>
                                 <TextField  margin="normal" fullWidth id="title" name="title" label="Titre" onChange={this.createSlug}/>
                                 <TextField fullWidth id="slug" name="slug" label="slug"
                                            InputProps={{

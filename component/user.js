@@ -9,6 +9,7 @@ const axios = require("axios");
 import Card from '@material-ui/core/Card';
 import fetch from "isomorphic-unfetch";
 import {withStyles} from "@material-ui/core/styles";
+import LinearProgress from "@material-ui/core/LinearProgress";
 const CssTextField = withStyles({
     root: {
         '& .MuiFormLabel-root' :{
@@ -34,7 +35,8 @@ class User extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: props.user
+            user: props.user,
+            hideForm : false
         }
 
     }
@@ -45,6 +47,7 @@ class User extends React.Component {
     };
 
     saveData = () => {
+        this.setState({hideForm : true});
         axios.put(process.env.REACT_API + "/user/" + this.state.user.user_id, new FormData(document.getElementById('userForm')))
             .then(() => {
                 this.reloadUser()
@@ -61,7 +64,8 @@ class User extends React.Component {
             }
         };
         axios.post(process.env.REACT_API+"/image", formData, config)
-            .then(() => {
+            .then((response) => {
+                document.getElementById('imgContainer').style.backgroundImage =  `url(${process.env.REACT_BUCKET}/${response.data}`;
                 this.reloadUser()
             })
     };
@@ -74,7 +78,11 @@ class User extends React.Component {
         };
         fetch(process.env.REACT_API + '/reloaduser', obj)
             .then(response => response.status === 401 ? null : response.json())
-            .then(data => localStorage.setItem('idToken', data.token));
+            .then(data => {
+                this.setState({hideForm : false});
+
+                localStorage.setItem('idToken', data.token)
+            });
     };
 
     showChange = () => {
@@ -125,6 +133,13 @@ class User extends React.Component {
                 placeItems: 'flex-end',
                 justifyContent: 'center',
             },
+            form: {
+                display: this.state.hideForm ? 'none' : 'block'
+            },
+            progress: {
+                display: this.state.hideForm ? 'block' : 'none',
+                width: '300px'
+            }
         };
 
 
@@ -137,7 +152,7 @@ class User extends React.Component {
                         <CloseIcon onClick={this.closeUser} style={style.closeIcon}/>
                     </Box>
                     <Card style={{borderRadius: '150px 150px'}}>
-                        <div onMouseEnter={this.showChange} onMouseLeave={this.hideChange} style={style.imgContainer}>
+                        <div onMouseEnter={this.showChange} onMouseLeave={this.hideChange} id='imgContainer' style={style.imgContainer}>
                             <input style={{display: 'none'}} type="file" name="file" id="file"
                                    onChange={this.onChangeImg}/>
                             <label id='labelPicture' style={style.labelPicture} htmlFor="file">changer d'image</label>
@@ -148,7 +163,8 @@ class User extends React.Component {
                     <Box mt={2}>
                         {this.state.user.username}
                     </Box>
-                    <form id="userForm">
+                    <LinearProgress style={style.progress}/>
+                    <form id="userForm"  style={style.form}>
                         <Box display="flex">
                             <Box mt={4} style={{fontWeight : "bold", fontSize : "15px"}}>
                                 <span>Date de naissance</span>
@@ -180,7 +196,7 @@ class User extends React.Component {
                                 />
                         </Box>
                         <Box display="flex" mt={5} justifyContent="flex-end">
-                            <Button onClick={this.saveData} color="secondary">Mettre à jour les données</Button>
+                            <Button onClick={this.saveData} color="secondary">Mettre à jour</Button>
 
                         </Box>
                     </form>
