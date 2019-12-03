@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
@@ -8,7 +7,26 @@ import Button from '@material-ui/core/Button';
 import fetch from "isomorphic-unfetch";
 import Box from '@material-ui/core/Box';
 import LinearProgress from '@material-ui/core/LinearProgress';
-
+const CssTextField = withStyles({
+    root: {
+        '& .MuiFormLabel-root' :{
+            color : '#E9EAE9',
+            fontWeight : 'bold',
+            fontSize : '20px'
+        },
+        '& .MuiInputBase-input' : {
+            color : '#E9EAE9',
+            paddingTop : '15px'
+        },
+        '& .MuiInput-underline:before' : {
+            borderBottomColor : '#E9EAE9'
+        },
+        '& .MuiInput-underline:hover:not(.Mui-disabled):before, .MuiInput-colorSecondary.MuiInput-underline:after,.MuiInput-underline:before':
+          {
+            borderBottomColor : '#E9EAE9'
+        },
+    },
+})(TextField);
 
 class loginModal extends React.Component {
     constructor(props) {
@@ -82,15 +100,13 @@ class loginModal extends React.Component {
                 justifyContent: 'center',
             },
             paper: {
-                backgroundColor: "#fff",
-                border: '2px solid #000',
-                padding: '10px',
+                backgroundColor: "#850606",
+                padding: '50px 10px',
                 width: '500px',
                 display: 'flex',
                 alignItems: 'center',
-                height: '200px',
-                justifyContent: 'center'
-
+                justifyContent: 'center',
+                border:'none',
             },
             input: {
                 marginLeft: '10px',
@@ -98,9 +114,7 @@ class loginModal extends React.Component {
             },
             validate: {
                 textAlign: 'center',
-                width: '96%',
-                margin: "10px",
-                marginTop: '20px'
+                width: '100%',
             },
             form: {
                 display: this.state.hideForm ? 'none' : 'block'
@@ -133,29 +147,39 @@ class loginModal extends React.Component {
                         <Box style={style.paper}>
                             <LinearProgress style={style.progress}/>
                             <form onSubmit={this.handleSubmit} style={style.form}>
-                                <Box display="flex">
-                                    <TextField id="username"
-                                               required
-                                               error={this.state.error}
-                                               style={style.input}
-                                               label="username"
-                                               margin="dense"
-                                               variant="outlined"
-                                               onChange={this.changeUsername}
+                                <Box display="flex"
+                                flexDirection="column">
+                                    <CssTextField
+                                        label="Username"
+                                        id="username"
+                                        required
+                                        style={{ margin: 25, color: '##E9EAE9' }}
+                                        margin="normal"
+                                        color="secondary"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            required: false
+                                        }}
+                                        onChange={this.changeUsername}
                                     />
-                                    <TextField id="password"
+                                    <CssTextField id="password"
+                                               color="secondary"
                                                required
-                                               label="password"
-                                               style={style.input}
-                                               error={this.state.error}
+                                               label="Password"
+                                               style={{ margin: 25, color: '##E9EAE9' }}
                                                type="password"
-                                               variant="outlined"
-                                               margin="dense"
+                                               margin="normal"
+                                               InputLabelProps={{
+                                                   shrink: true,
+                                                   required: false
+                                               }}
                                                onChange={this.changePassword}
                                     />
                                 </Box>
-                                <Button type="submit" variant="contained" color='primary'
+                                <Box p={3} mt={3}>
+                                <Button type="submit" variant="contained" color='secondary'
                                         style={style.validate}> Valider</Button>
+                                </Box>
                             </form>
                         </Box>
                     </Fade>

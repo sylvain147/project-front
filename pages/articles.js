@@ -105,7 +105,7 @@ const articles = props => (
 )
 articles.getInitialProps = async function () {
     const res = await fetch(process.env.REACT_API+'/articles');
-
+    console.log(res)
     const articles = await res.json();
 
     return {

@@ -1,13 +1,9 @@
-import React, {useState} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import React from 'react';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import fetch from "isomorphic-unfetch";
 import Box from '@material-ui/core/Box';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from "@material-ui/core/Typography";
 
 
@@ -28,9 +24,9 @@ class logOutModal extends React.Component {
     };
 
     disconnect = () => {
-        localStorage.removeItem('idToken')
+        localStorage.removeItem('idToken');
         window.location.reload();
-    }
+    };
 
     render() {
         const style = {
@@ -67,12 +63,12 @@ class logOutModal extends React.Component {
                 display: this.state.hideForm ? 'block' : 'none',
                 width: '300px'
             }
-        }
+        };
 
 
         return (
             <div style={{display: 'inline-block'}}>
-                <span style={{cursor : 'pointer'}}type="button" onClick={this.handleOpen}>
+                <span style={{cursor : 'pointer'}} onClick={this.handleOpen}>
                     Se déconnecter
                 </span>
                 <Modal

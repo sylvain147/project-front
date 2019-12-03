@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import React from 'react';
+import { withStyles} from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
@@ -11,6 +11,27 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 
+const CssTextField = withStyles({
+    root: {
+        '& .MuiFormLabel-root': {
+            color: '#E9EAE9',
+            fontWeight: 'bold',
+            fontSize: '20px'
+        },
+        '& .MuiInputBase-input': {
+            color: '#E9EAE9',
+            paddingTop: '15px'
+        },
+        '& .MuiInput-underline:before': {
+            borderBottomColor: '#E9EAE9'
+        },
+        '& .MuiInput-underline:hover:not(.Mui-disabled):before, .MuiInput-colorSecondary.MuiInput-underline:after,.MuiInput-underline:before':
+            {
+                borderBottomColor: '#E9EAE9'
+            },
+    },
+})(TextField);
+
 class registerModal extends React.Component {
     constructor(props) {
         super(props);
@@ -20,10 +41,10 @@ class registerModal extends React.Component {
             hideForm: false,
             error: false,
             mail: null,
-            errorMessage : '',
+            errorMessage: '',
             open: false,
-            openBadSnack : false,
-            openGoodSnack : false
+            openBadSnack: false,
+            openGoodSnack: false
         }
     }
 
@@ -43,10 +64,10 @@ class registerModal extends React.Component {
         this.setState({open: true})
     };
     handleCloseBadSnack = () => {
-        this.setState({openBadSnack :false})
+        this.setState({openBadSnack: false})
     };
     handleCloseGoodSnack = () => {
-        this.setState({openGoodSnack :false})
+        this.setState({openGoodSnack: false})
     };
 
     handleClose = () => {
@@ -55,7 +76,7 @@ class registerModal extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({hideForm: true})
+        this.setState({hideForm: true});
         let obj = {
             method: 'POST',
             body: JSON.stringify({
@@ -66,26 +87,25 @@ class registerModal extends React.Component {
             headers: {
                 "Content-Type": "application/json"
             }
-        }
+        };
         fetch(process.env.REACT_API + '/user', obj)
             .then(response => {
                     if (response.status === 400) {
                         this.setState({
-                            openBadSnack :true,
+                            openBadSnack: true,
                             hideForm: false,
-                            error : true
+                            error: true
                         })
-                    }
-                    else {
+                    } else {
                         this.setState({
-                            openGoodSnack :true,
+                            openGoodSnack: true,
                             hideForm: false,
-                            error : false
+                            error: false
                         })
                     }
                 }
             )
-    }
+    };
 
     render() {
         const style = {
@@ -95,13 +115,13 @@ class registerModal extends React.Component {
                 justifyContent: 'center',
             },
             paper: {
-                backgroundColor: "#fff",
-                border: '2px solid #000',
+                backgroundColor: "#850606",
+                padding: '50px 10px',
                 width: '500px',
                 display: 'flex',
                 alignItems: 'center',
-                height: '320px',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                border: 'none',
             },
             validate: {
                 textAlign: 'center',
@@ -116,12 +136,12 @@ class registerModal extends React.Component {
                 width: '300px'
             }
 
-        }
+        };
 
 
         return (
             <div style={{display: 'inline-block'}}>
-                <span style={{color : '#556cd6', cursor:'pointer'}}onClick={this.handleOpen}>
+                <span style={{color: '#556cd6', cursor: 'pointer'}} onClick={this.handleOpen}>
                     Créer un compte
                 </span>
                 <Modal
@@ -141,49 +161,59 @@ class registerModal extends React.Component {
                             <LinearProgress style={style.progress}/>
                             <form onSubmit={this.handleSubmit} style={style.form}>
                                 <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-                                    <TextField id="email"
-                                               label="email"
-                                               margin="dense"
-                                               type="email"
-                                               error={this.state.error}
-                                               onChange={this.changeMail}
-                                               variant="outlined"
-                                               required
+                                    <CssTextField id="email"
+                                                  style={{margin: 25, color: '##E9EAE9'}}
+                                                  margin="normal"
+                                                  InputLabelProps={{
+                                                      shrink: true,
+                                                  }}
+                                                  label="Email"
+                                                  onChange={this.changeMail}
+                                                  required
                                     />
-                                    <TextField id="username"
-                                               label="username"
-                                               margin="dense"
-                                               error={this.state.error}
+                                    <CssTextField id="username"
+                                               label="Username"
                                                onChange={this.changeUsername}
-                                               variant="outlined"
-                                               required
+                                               style={{margin: 25, color: '##E9EAE9'}}
+                                               margin="normal"
+                                               InputLabelProps={{
+                                                   shrink: true,
+                                               }}
+                                                  required
                                     />
-                                    <TextField id="password"
-                                               label="password"
-                                               margin="dense"
+                                    <CssTextField id="password"
+                                               label="Password"
                                                type="password"
                                                onChange={this.changePassword}
-                                               variant="outlined"
-                                               required
+                                               style={{margin: 25, color: '##E9EAE9'}}
+                                               margin="normal"
+                                               InputLabelProps={{
+                                                   shrink: true,
+                                               }}
+                                                  required
                                     />
 
                                 </Box>
-                                <Button  type="submit" variant="contained" color='primary'
+                                <Box p={3} mt={3}>
+                                <Button type="submit" variant="contained" color='secondary'
                                         style={style.validate}> Valider</Button>
+                                </Box>
                             </form>
                             <Snackbar
                                 open={this.state.openBadSnack}
                                 autoHideDuration={3000}
                                 onClose={this.handleCloseBadSnack}
                             >
-                                <SnackbarContent style={{backgroundColor : '#d32f2f', textAlign : 'center'}}  message="Utitlisateur déjà existant"/>
+                                <SnackbarContent style={{backgroundColor: '#d32f2f', textAlign: 'center'}}
+                                                 message="Utitlisateur déjà existant"/>
                             </Snackbar>
                             <Snackbar
                                 open={this.state.openGoodSnack}
                                 autoHideDuration={3000}
                                 onClose={this.handleCloseGoodSnack}
                             >
-                                <SnackbarContent style={{backgroundColor : '#43a047', textAlign : 'center'}}  message="Utitlisateur crée"/>
+                                <SnackbarContent style={{backgroundColor: '#43a047', textAlign: 'center'}}
+                                                 message="Utitlisateur crée"/>
                             </Snackbar>
                         </div>
                     </Fade>

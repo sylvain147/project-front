@@ -1,20 +1,17 @@
 import Link from '../src/Link';
-import React, {useContext} from 'react';
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import {makeStyles} from '@material-ui/core/styles';
-import {useRouter} from 'next/router';
-import dynamic from 'next/dynamic'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import User from './user'
 import LoginModal from "./loginModal";
-import fetch from "isomorphic-unfetch";
 import RegisterModal from "./registerModal";
 import {UserContext} from "./UserContext";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
     navLink: {
         color: '#454545',
         '&:hover': {
@@ -41,7 +38,7 @@ const useStyles = makeStyles(theme => ({
         borderLeft: '1px solid',
         paddingLeft: '12px'
     }
-}))
+}));
 const BarLink = props => (
     <Box p={1}>
         <Typography>
@@ -68,7 +65,7 @@ class header extends React.Component {
         if (this.context.user != null) {
             return <User user={this.context.user.user} container={"userContainer"}/>
         }
-        return <div></div>
+        return null;
     }
 
     render() {
@@ -99,7 +96,7 @@ class header extends React.Component {
                 borderLeft: '1px solid',
                 paddingLeft: '12px'
             }
-        }
+        };
 
 
         return (
@@ -137,6 +134,6 @@ class header extends React.Component {
         )
     }
 }
-header.contextType = UserContext
+header.contextType = UserContext;
 
 export default header

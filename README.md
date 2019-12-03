@@ -19,3 +19,13 @@ npm run dev
 ## The idea behind the example
 
 [Next.js](https://github.com/zeit/next.js) is a framework for server-rendered React apps.
+
+
+color : 
+850606 red
+
+056A05 green
+
+E9EAE9 light grey
+
+424447 Dark grey
