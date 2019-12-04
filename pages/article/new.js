@@ -1,11 +1,11 @@
 import React from "react";
-import Header from "../../component/header";
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import Container from "@material-ui/core/Container";
 import MarkdownIt from 'markdown-it';
 import dynamic from 'next/dynamic';
 import {UserContext} from "../../component/UserContext";
+import AddIcon from '@material-ui/icons/Add';
 
 const axios = require("axios");
 import Button from "@material-ui/core/Button"
@@ -21,7 +21,7 @@ class newArticle extends React.Component {
         super(props);
         this.state = {
             slug: ''
-        }
+        };
         this.mdParser = new MarkdownIt()
     }
 
@@ -30,31 +30,58 @@ class newArticle extends React.Component {
             .then((response) => {
             }).catch((error) => {
         });
-    }
+    };
 
     createSlug = (event) => {
         axios.get(process.env.REACT_API + "/slug?title=" + event.target.value)
             .then((response) => {
                 this.setState({slug: response.data});
-            }).catch((error) => {
-        });
+            })
+    };
+    addArticlePicture = (event) => {
+        axios.post(process.env.REACT_API = '');
+        const formData = new FormData();
+        formData.append('file', event.target.files[0]);
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        };
+        axios.post(process.env.REACT_API+"article/img", formData, config)
+            .then((response) => {
+
+            })
     };
 
     getPage = () => {
-        if(this.context.connecting === true) {
+        const style = {
+            articlePicture: {
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                overflow: 'hidden',
+                width: '100px',
+                height: '150px',
+                backgroundColor: '#E9EAE9',
+                transition: 'height 200ms',
+                cursor: 'pointer',
+                color: '#424447'
+            },
+        }
+        if (this.context.connecting === true) {
             return <LinearProgress/>
-        }
-        else if(this.context.user === null) {
+        } else if (this.context.user === null) {
             return <div>You have nothing to do here</div>
-        }
-        else {
+        } else {
             return (
                 <React.Fragment>
                     <Container maxWidth="md">
                         <FormControl fullWidth>
-                            <form id="articleForm" >
-                                <input type="number" name="userId" style={{display:'none'}} value={this.context.user.user.user_id} readOnly/>
-                                <TextField  margin="normal" fullWidth id="title" name="title" label="Titre" onChange={this.createSlug}/>
+                            <form id="articleForm">
+                                <input type="number" name="userId" style={{display: 'none'}}
+                                       value={this.context.user.user.user_id} readOnly/>
+                                <TextField margin="normal" fullWidth id="title" name="title" label="Titre"
+                                           onChange={this.createSlug}/>
                                 <TextField fullWidth id="slug" name="slug" label="slug"
                                            InputProps={{
                                                readOnly: true
@@ -69,6 +96,9 @@ class newArticle extends React.Component {
                                     rows="4"
                                     margin="normal"
                                 />
+                                <input style={{display: 'none'}} type="file" name="file" id="file"
+                                       onChange={this.addArticlePicture}/>
+                                <label id='labelPicture' style={style.articlePicture} htmlFor="file"><AddIcon/></label>
                                 <div style={{height: "500px"}}>
                                     <MdEditor
                                         name="content"
@@ -89,10 +119,11 @@ class newArticle extends React.Component {
 
     render() {
         return (
-           this.getPage()
+            this.getPage()
         )
     }
 }
+
 newArticle.contextType = UserContext
 
 export default newArticle
